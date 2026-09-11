@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:LolSpector.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="420"
+        x:Class="LolSpector.App.Views.QuickEntryWindow"
+        x:DataType="vm:QuickEntryViewModel"
+        Width="420" Height="420"
+        WindowStartupLocation="CenterOwner"
+        Title="輸入名單">
+  <StackPanel Margin="16" Spacing="8">
+    <TextBlock Text="一次輸入 5 位玩家的 Riot ID(遊戲名稱#TAG),用 Tab 鍵快速切換到下一格。"
+               TextWrapping="Wrap" Opacity="0.75" Margin="0,0,0,6" />
+
+    <TextBox Name="Row1" Text="{Binding Id1}" PlaceholderText="玩家 1:遊戲名稱#TAG" TabIndex="1" />
+    <TextBox Text="{Binding Id2}" PlaceholderText="玩家 2:遊戲名稱#TAG" TabIndex="2" />
+    <TextBox Text="{Binding Id3}" PlaceholderText="玩家 3:遊戲名稱#TAG" TabIndex="3" />
+    <TextBox Text="{Binding Id4}" PlaceholderText="玩家 4:遊戲名稱#TAG" TabIndex="4" />
+    <TextBox Text="{Binding Id5}" PlaceholderText="玩家 5:遊戲名稱#TAG" TabIndex="5" />
+
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,20,0,0">
+      <Button Content="取消" Click="OnCancelClick" TabIndex="7" />
+      <Button Content="查詢" Click="OnQueryClick" IsDefault="True" TabIndex="6" />
+    </StackPanel>
+  </StackPanel>
+</Window>

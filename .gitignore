@@ -1,0 +1,20 @@
+## .NET
+bin/
+obj/
+*.user
+*.userosscache
+*.suo
+
+## Rider / VS
+.vs/
+.idea/
+*.DotSettings.user
+
+## OS
+.DS_Store
+
+## Publish output
+publish/
+
+## Local app config (contains API key) — never commit
+appsettings.local.json

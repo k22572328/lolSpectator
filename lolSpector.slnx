@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LolSpector.App/LolSpector.App.csproj" />
+    <Project Path="src/LolSpector.Core/LolSpector.Core.csproj" />
+  </Folder>
+</Solution>

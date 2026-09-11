@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:LolSpector.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="560"
+        x:Class="LolSpector.App.Views.SettingsWindow"
+        x:DataType="vm:SettingsViewModel"
+        Width="420" Height="560"
+        WindowStartupLocation="CenterOwner"
+        Title="設定">
+  <StackPanel Margin="16" Spacing="10">
+    <TextBlock Text="Riot API Key" FontWeight="SemiBold" />
+    <TextBox Text="{Binding ApiKey}" PlaceholderText="貼上 Riot Developer Portal 的 API Key" />
+    <TextBlock Text="Development Key 每 24 小時會過期,過期後需至 developer.riotgames.com 重新產生並貼到這裡。"
+               Opacity="0.6" FontSize="11" TextWrapping="Wrap" />
+
+    <TextBlock Text="常用角色統計樣本場數(每種排位)" FontWeight="SemiBold" Margin="0,10,0,0" />
+    <NumericUpDown Value="{Binding SampleSize}" Minimum="1" Maximum="100" FormatString="0" />
+    <TextBlock Text="場數越多統計越準,但 5 人同時查詢時等待時間會明顯拉長。"
+               Opacity="0.6" FontSize="11" TextWrapping="Wrap" />
+
+    <TextBlock Text="統計時間範圍(最近幾個月)" FontWeight="SemiBold" Margin="0,10,0,0" />
+    <NumericUpDown Value="{Binding SampleWindowMonths}" Minimum="1" Maximum="24" FormatString="0" />
+    <TextBlock Text="只統計這段時間內的對戰;超過此範圍就算場數不夠上面的樣本數也不補,寧缺勿濫。"
+               Opacity="0.6" FontSize="11" TextWrapping="Wrap" />
+
+    <TextBlock Text="常用角色顯示前幾名" FontWeight="SemiBold" Margin="0,10,0,0" />
+    <NumericUpDown Value="{Binding TopChampionCount}" Minimum="1" Maximum="20" FormatString="0" />
+
+    <TextBlock Text="近期對戰顯示場數(每種排位)" FontWeight="SemiBold" Margin="0,10,0,0" />
+    <NumericUpDown Value="{Binding RecentMatchCount}" Minimum="1" Maximum="20" FormatString="0" />
+
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,20,0,0">
+      <Button Content="取消" Click="OnCancelClick" />
+      <Button Content="儲存" Click="OnSaveClick" />
+    </StackPanel>
+  </StackPanel>
+</Window>

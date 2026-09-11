@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:LolSpector.App.ViewModels"
+        xmlns:views="using:LolSpector.App.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+        x:Class="LolSpector.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="1400" Height="900" MinWidth="900" MinHeight="600"
+        Title="lolSpector">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                <TextBlock Text="lolSpector" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+                <Button Content="設定" Command="{Binding OpenSettingsCommand}" />
+                <Button Content="輸入名單" Command="{Binding OpenQuickEntryCommand}" />
+                <ProgressBar IsIndeterminate="True" Width="140" Height="6" VerticalAlignment="Center"
+                             IsVisible="{Binding IsQuerying}" />
+            </StackPanel>
+            <TextBlock Text="{Binding StatusText}" Opacity="0.8" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ItemsControl ItemsSource="{Binding Players}" VerticalAlignment="Stretch">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1" Columns="5" VerticalAlignment="Stretch" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm:PlayerPanelViewModel">
+                    <views:PlayerPanelView VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+
+</Window>

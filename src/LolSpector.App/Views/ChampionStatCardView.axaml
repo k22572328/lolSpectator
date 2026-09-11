@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:LolSpector.App.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="LolSpector.App.Views.ChampionStatCardView"
+             x:DataType="vm:ChampionStatCardViewModel">
+  <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+          CornerRadius="6" Padding="10" Margin="0,0,0,6">
+    <StackPanel Spacing="3">
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="{Binding ChampionName}" FontWeight="Bold" FontSize="14" />
+        <TextBlock Text="{Binding WinRate}" Foreground="MediumSeaGreen" />
+      </StackPanel>
+      <TextBlock Text="{Binding GamesRecord}" Opacity="0.8" />
+      <TextBlock Text="{Binding KdaLine}" />
+      <TextBlock Text="{Binding KillParticipation}" />
+      <TextBlock Text="{Binding CsLine}" />
+      <TextBlock Text="{Binding DamageLine}" />
+      <TextBlock Text="{Binding DamageTakenLine}" />
+      <TextBlock Text="{Binding GoldLine}" />
+      <TextBlock Text="{Binding VisionLine}" />
+      <TextBlock Text="{Binding Position}" Opacity="0.7" />
+      <TextBlock Text="{Binding LastPlayed}" Opacity="0.6" FontSize="11" />
+    </StackPanel>
+  </Border>
+</UserControl>
