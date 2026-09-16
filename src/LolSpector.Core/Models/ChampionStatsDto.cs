@@ -20,9 +20,7 @@ public class ChampionStatsDto
 
     public double AvgCs { get; set; }
     public double CsPerMin { get; set; }
-    public double AvgDamageToChampions { get; set; }
-    public double AvgDamageTaken { get; set; }
-    public double AvgGoldEarned { get; set; }
+    public double DamageSharePercent { get; set; }
     public double GoldPerMin { get; set; }
     public double AvgVisionScore { get; set; }
 

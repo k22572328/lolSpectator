@@ -22,39 +22,44 @@
           <TextBlock Text="彈性排位:" Opacity="0.7" />
           <TextBlock Text="{Binding FlexRankSummary}" TextWrapping="Wrap" />
         </StackPanel>
+
+        <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" CornerRadius="6"
+                Padding="8" Margin="0,4,0,0" IsVisible="{Binding !HasError}">
+          <StackPanel Spacing="2">
+            <TextBlock Text="整體數據" FontWeight="SemiBold" FontSize="12" Opacity="0.85" />
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="1" ColumnSpacing="8">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="視野分數" Opacity="0.7" />
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OverallVisionText}" Foreground="{Binding VisionHighlightBrush}" />
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="輸出佔比" Opacity="0.7" />
+              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding OverallDamageShareText}" Foreground="{Binding DamageShareHighlightBrush}" />
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="分均經濟" Opacity="0.7" />
+              <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding OverallGoldText}" Foreground="{Binding GoldHighlightBrush}" />
+            </Grid>
+          </StackPanel>
+        </Border>
       </StackPanel>
 
       <ScrollViewer>
         <StackPanel Spacing="8" IsVisible="{Binding !HasError}">
-          <TextBlock Text="近期對戰" FontWeight="SemiBold" />
-          <ItemsControl ItemsSource="{Binding RecentMatches}">
+          <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+            <TextBlock Text="常用角色" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <ComboBox ItemsSource="{Binding PositionOptions}" SelectedItem="{Binding SelectedPosition}" MinWidth="90">
+              <ComboBox.ItemTemplate>
+                <DataTemplate DataType="vm:PositionFilterOption">
+                  <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <ItemsControl ItemsSource="{Binding Champions}">
             <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="vm:RecentMatchViewModel">
-                <views:RecentMatchRowView />
+              <DataTemplate DataType="vm:ChampionStatCardViewModel">
+                <views:ChampionStatCardView />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-
-          <TabControl>
-            <TabItem Header="單雙排常用角色">
-              <ItemsControl ItemsSource="{Binding SoloChampions}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="vm:ChampionStatCardViewModel">
-                    <views:ChampionStatCardView />
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-            </TabItem>
-            <TabItem Header="彈性排位常用角色">
-              <ItemsControl ItemsSource="{Binding FlexChampions}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate DataType="vm:ChampionStatCardViewModel">
-                    <views:ChampionStatCardView />
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-            </TabItem>
-          </TabControl>
         </StackPanel>
       </ScrollViewer>
     </DockPanel>

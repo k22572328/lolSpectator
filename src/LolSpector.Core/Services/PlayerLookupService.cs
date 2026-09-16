@@ -94,6 +94,9 @@ public class PlayerLookupService(RiotApiClient api, MatchCacheStore cache)
 
         var team = match.Info.Teams.FirstOrDefault(t => t.TeamId == participant.TeamId);
         var teamKills = team?.Objectives.Champion.Kills ?? participant.Kills + participant.Assists;
+        var teamDamage = match.Info.Participants
+            .Where(p => p.TeamId == participant.TeamId)
+            .Sum(p => p.TotalDamageDealtToChampions);
 
         return new MatchParticipantSample
         {
@@ -111,9 +114,9 @@ public class PlayerLookupService(RiotApiClient api, MatchCacheStore cache)
             Cs = participant.TotalMinionsKilled + participant.NeutralMinionsKilled,
             GoldEarned = participant.GoldEarned,
             DamageToChampions = participant.TotalDamageDealtToChampions,
-            DamageTaken = participant.TotalDamageTaken,
             VisionScore = participant.VisionScore,
             TeamKills = teamKills,
+            TeamDamageToChampions = teamDamage,
         };
     }
 

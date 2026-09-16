@@ -34,4 +34,6 @@ public partial class QuickEntryViewModel : ViewModelBase
     }
 
     public List<string> ToList() => [Id1, Id2, Id3, Id4, Id5];
+
+    public void Clear() => Id1 = Id2 = Id3 = Id4 = Id5 = "";
 }

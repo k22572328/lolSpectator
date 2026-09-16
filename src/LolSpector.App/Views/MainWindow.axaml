@@ -25,6 +25,13 @@
                              IsVisible="{Binding IsQuerying}" />
             </StackPanel>
             <TextBlock Text="{Binding StatusText}" Opacity="0.8" TextWrapping="Wrap" />
+
+            <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center" Margin="0,4,0,0">
+                <TextBlock Text="常用角色統計依據:" VerticalAlignment="Center" Opacity="0.8" />
+                <CheckBox Content="單雙排" IsChecked="{Binding IncludeSolo}" />
+                <CheckBox Content="彈性排位" IsChecked="{Binding IncludeFlex}" />
+                <TextBlock Text="(每位玩家可各自在自己面板上再篩選位置)" VerticalAlignment="Center" Opacity="0.5" FontSize="11" Margin="12,0,0,0" />
+            </StackPanel>
         </StackPanel>
 
         <ItemsControl ItemsSource="{Binding Players}" VerticalAlignment="Stretch">

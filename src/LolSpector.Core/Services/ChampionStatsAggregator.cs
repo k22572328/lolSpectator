@@ -16,6 +16,10 @@ public static class ChampionStatsAggregator
             .ToList();
     }
 
+    /// <summary>Same math as <see cref="Aggregate"/>, but collapsed across every champion into one combined line — for "this player's overall numbers regardless of champion".</summary>
+    public static ChampionStatsDto? AggregateOverall(IReadOnlyCollection<MatchParticipantSample> samples) =>
+        samples.Count == 0 ? null : BuildStats(championId: 0, championName: "", queueType: "", [.. samples]);
+
     private static ChampionStatsDto BuildStats(int championId, string championName, string queueType, List<MatchParticipantSample> games)
     {
         var wins = games.Count(s => s.Win);
@@ -40,9 +44,7 @@ public static class ChampionStatsAggregator
 
             AvgCs = games.Average(s => s.Cs),
             CsPerMin = games.Average(PerMinute(s => s.Cs)),
-            AvgDamageToChampions = games.Average(s => s.DamageToChampions),
-            AvgDamageTaken = games.Average(s => s.DamageTaken),
-            AvgGoldEarned = games.Average(s => s.GoldEarned),
+            DamageSharePercent = 100.0 * games.Average(s => s.TeamDamageToChampions == 0 ? 0 : (double)s.DamageToChampions / s.TeamDamageToChampions),
             GoldPerMin = games.Average(PerMinute(s => s.GoldEarned)),
             AvgVisionScore = games.Average(s => s.VisionScore),
 

@@ -20,9 +20,11 @@ public class MatchParticipantSample
     public int Cs { get; set; }
     public int GoldEarned { get; set; }
     public int DamageToChampions { get; set; }
-    public int DamageTaken { get; set; }
     public int VisionScore { get; set; }
 
     /// <summary>Total kills by this player's team in the match (for kill participation).</summary>
     public int TeamKills { get; set; }
+
+    /// <summary>Total damage to champions by this player's team in the match (for damage share).</summary>
+    public int TeamDamageToChampions { get; set; }
 }

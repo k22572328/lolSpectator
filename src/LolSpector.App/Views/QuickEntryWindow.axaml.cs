@@ -33,4 +33,10 @@ public partial class QuickEntryWindow : Window
         Submitted = false;
         Close();
     }
+
+    private void OnClearClick(object? sender, RoutedEventArgs e)
+    {
+        ((QuickEntryViewModel)DataContext!).Clear();
+        Row1.Focus();
+    }
 }

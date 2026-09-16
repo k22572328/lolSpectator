@@ -1,10 +1,31 @@
-using LolSpector.Core.Models;
+using Avalonia.Media;
 
 namespace LolSpector.App.Utils;
 
 /// <summary>Chinese display labels for Riot's English enum-ish strings. Presentation-only — kept out of Core.</summary>
 public static class DisplayFormat
 {
+    private static readonly Color WinRateLow = Color.FromRgb(224, 76, 76);    // 低勝率:深紅
+    private static readonly Color WinRateMid = Color.FromRgb(180, 180, 180); // 50%:中性灰
+    private static readonly Color WinRateHigh = Color.FromRgb(56, 176, 92);  // 高勝率:深綠
+
+    /// <summary>Red→gray→green gradient keyed on win rate, deeper toward either end. 50% sits at the neutral midpoint.</summary>
+    public static IBrush WinRateColor(double winRatePercent)
+    {
+        var t = Math.Clamp(winRatePercent / 100.0, 0.0, 1.0);
+        var color = t >= 0.5 ? Lerp(WinRateMid, WinRateHigh, (t - 0.5) * 2) : Lerp(WinRateLow, WinRateMid, t * 2);
+        return new SolidColorBrush(color);
+    }
+
+    private static Color Lerp(Color from, Color to, double t)
+    {
+        t = Math.Clamp(t, 0.0, 1.0);
+        return Color.FromRgb(
+            (byte)(from.R + (to.R - from.R) * t),
+            (byte)(from.G + (to.G - from.G) * t),
+            (byte)(from.B + (to.B - from.B) * t));
+    }
+
     public static string Position(string teamPosition) => teamPosition switch
     {
         "TOP" => "上路",
@@ -13,20 +34,6 @@ public static class DisplayFormat
         "BOTTOM" => "下路",
         "UTILITY" => "輔助",
         _ => "未知",
-    };
-
-    public static string QueueLabel(int queueId) => queueId switch
-    {
-        RankedQueue.SoloDuoId => "單雙排",
-        RankedQueue.FlexId => "彈性排位",
-        _ => "其他",
-    };
-
-    public static string QueueLabel(string queueType) => queueType switch
-    {
-        RankedQueue.SoloDuoType => "單雙排",
-        RankedQueue.FlexType => "彈性排位",
-        _ => queueType,
     };
 
     public static string Tier(string tier) => tier.ToUpperInvariant() switch
@@ -53,6 +60,4 @@ public static class DisplayFormat
         if (delta < TimeSpan.FromDays(30)) return $"{(int)delta.TotalDays} 天前";
         return time.LocalDateTime.ToString("yyyy/MM/dd");
     }
-
-    public static string Duration(TimeSpan duration) => $"{(int)duration.TotalMinutes}:{duration.Seconds:D2}";
 }

@@ -49,7 +49,6 @@ public class ParticipantDto
     public int NeutralMinionsKilled { get; set; }
     public int GoldEarned { get; set; }
     public int TotalDamageDealtToChampions { get; set; }
-    public int TotalDamageTaken { get; set; }
     public int VisionScore { get; set; }
 }
 

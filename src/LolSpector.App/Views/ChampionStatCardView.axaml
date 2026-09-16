@@ -8,21 +8,44 @@
              x:DataType="vm:ChampionStatCardViewModel">
   <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
           CornerRadius="6" Padding="10" Margin="0,0,0,6">
-    <StackPanel Spacing="3">
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="{Binding ChampionName}" FontWeight="Bold" FontSize="14" />
-        <TextBlock Text="{Binding WinRate}" Foreground="MediumSeaGreen" />
+    <DockPanel>
+      <Border DockPanel.Dock="Right" Width="48" Height="48" CornerRadius="6" ClipToBounds="True"
+              Margin="10,0,0,0" VerticalAlignment="Top" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+        <Image Source="{Binding Icon}" Stretch="UniformToFill" />
+      </Border>
+      <StackPanel Spacing="3">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="{Binding ChampionName}" FontWeight="Bold" FontSize="14" />
+          <TextBlock Text="{Binding WinRate}" Foreground="{Binding WinRateColor}" FontWeight="SemiBold" />
+        </StackPanel>
+        <TextBlock Text="{Binding GamesRecord}" Opacity="0.8" />
+
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="2" ColumnSpacing="8">
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding KdaLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding KdaValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding KillParticipationLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding KillParticipationValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding CsLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CsValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding DamageShareLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding DamageShareValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding GoldLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding GoldValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding VisionLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding VisionValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding PositionLabel}" Opacity="0.7" />
+          <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PositionValue}" TextWrapping="Wrap" />
+
+          <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding LastPlayedLabel}" Opacity="0.6" FontSize="11" />
+          <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding LastPlayedValue}" Opacity="0.6" FontSize="11" TextWrapping="Wrap" />
+        </Grid>
       </StackPanel>
-      <TextBlock Text="{Binding GamesRecord}" Opacity="0.8" />
-      <TextBlock Text="{Binding KdaLine}" />
-      <TextBlock Text="{Binding KillParticipation}" />
-      <TextBlock Text="{Binding CsLine}" />
-      <TextBlock Text="{Binding DamageLine}" />
-      <TextBlock Text="{Binding DamageTakenLine}" />
-      <TextBlock Text="{Binding GoldLine}" />
-      <TextBlock Text="{Binding VisionLine}" />
-      <TextBlock Text="{Binding Position}" Opacity="0.7" />
-      <TextBlock Text="{Binding LastPlayed}" Opacity="0.6" FontSize="11" />
-    </StackPanel>
+    </DockPanel>
   </Border>
 </UserControl>

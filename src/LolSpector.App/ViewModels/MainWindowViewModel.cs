@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LolSpector.Core.Caching;
@@ -30,6 +31,15 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial string StatusText { get; set; } = "點選「輸入名單」一次填入 5 組 Riot ID(格式:遊戲名稱#TAG)。";
 
+    [ObservableProperty]
+    public partial bool IncludeSolo { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool IncludeFlex { get; set; } = true;
+
+    partial void OnIncludeSoloChanged(bool value) => RecomputeAllChampions();
+    partial void OnIncludeFlexChanged(bool value) => RecomputeAllChampions();
+
     /// <summary>Raised when the user asks to open Settings; the View owns showing the dialog.</summary>
     public event Action? SettingsRequested;
 
@@ -48,7 +58,45 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             var panel = new PlayerPanelViewModel();
             if (i < _settings.RecentRiotIds.Count) panel.RiotIdInput = _settings.RecentRiotIds[i];
+            panel.PropertyChanged += OnPanelOverallStatsChanged;
             Players.Add(panel);
+        }
+    }
+
+    private void OnPanelOverallStatsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(PlayerPanelViewModel.OverallVisionScore)
+            or nameof(PlayerPanelViewModel.OverallDamageShare)
+            or nameof(PlayerPanelViewModel.OverallGoldPerMin)
+            or nameof(PlayerPanelViewModel.HasOverallStats))
+        {
+            RecomputeHighlights();
+        }
+    }
+
+    /// <summary>Marks, across all 5 players' overall (cross-champion) stats: lowest vision score, highest damage share, highest gold/min.</summary>
+    private void RecomputeHighlights()
+    {
+        var withStats = Players.Where(p => p.HasOverallStats).ToList();
+
+        foreach (var panel in Players)
+        {
+            panel.IsLowestVision = false;
+            panel.IsHighestDamageShare = false;
+            panel.IsHighestGoldPerMin = false;
+        }
+
+        if (withStats.Count == 0) return;
+
+        var minVision = withStats.Min(p => p.OverallVisionScore);
+        var maxDamageShare = withStats.Max(p => p.OverallDamageShare);
+        var maxGoldPerMin = withStats.Max(p => p.OverallGoldPerMin);
+
+        foreach (var panel in withStats)
+        {
+            if (panel.OverallVisionScore == minVision) panel.IsLowestVision = true;
+            if (panel.OverallDamageShare == maxDamageShare) panel.IsHighestDamageShare = true;
+            if (panel.OverallGoldPerMin == maxGoldPerMin) panel.IsHighestGoldPerMin = true;
         }
     }
 
@@ -102,6 +150,8 @@ public partial class MainWindowViewModel : ViewModelBase
         StatusText = "查詢中...";
         foreach (var panel in activePlayers) panel.BeginLoading();
 
+        await Utils.ChampionNameLocalizer.EnsureLoadedAsync();
+
         var sharedMatchCache = new ConcurrentDictionary<string, MatchDto>();
         var tasks = activePlayers.Select(panel => QueryOneAsync(panel, sharedMatchCache));
         await Task.WhenAll(tasks);
@@ -121,7 +171,7 @@ public partial class MainWindowViewModel : ViewModelBase
         try
         {
             var result = await _lookupService.GetPlayerAsync(panel.RiotIdInput, _settings.SampleSize, _settings.SampleWindowMonths, sharedMatchCache);
-            panel.ApplyResult(result, _settings);
+            panel.ApplyResult(result, _settings, IncludeSolo, IncludeFlex);
         }
         catch (FormatException ex)
         {
@@ -134,6 +184,15 @@ public partial class MainWindowViewModel : ViewModelBase
         catch (Exception ex)
         {
             panel.ApplyError($"查詢失敗:{ex.Message}");
+        }
+    }
+
+    /// <summary>Re-filters every panel's already-fetched samples against the current queue checkboxes — no API calls. Each panel keeps its own position filter.</summary>
+    private void RecomputeAllChampions()
+    {
+        foreach (var panel in Players)
+        {
+            panel.RecomputeChampions(_settings.TopChampionCount, IncludeSolo, IncludeFlex);
         }
     }
 }

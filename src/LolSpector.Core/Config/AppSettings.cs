@@ -13,11 +13,8 @@ public class AppSettings
     /// <summary>Only sample matches from within this many months — even if that yields fewer than SampleSize games.</summary>
     public int SampleWindowMonths { get; set; } = 3;
 
-    /// <summary>How many top champions to show per queue.</summary>
+    /// <summary>How many top champions to show.</summary>
     public int TopChampionCount { get; set; } = 5;
-
-    /// <summary>How many recent matches per queue to show in the simple recent-matches list.</summary>
-    public int RecentMatchCount { get; set; } = 5;
 
     /// <summary>The last 5 Riot IDs the user queried, restored on next launch.</summary>
     public List<string> RecentRiotIds { get; set; } = [];

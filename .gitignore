@@ -15,6 +15,7 @@ obj/
 
 ## Publish output
 publish/
+dist/
 
 ## Local app config (contains API key) — never commit
 appsettings.local.json
